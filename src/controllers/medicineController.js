@@ -43,7 +43,8 @@ const createMedication = async (req, res) => {
 
     return res.status(200).json({
       message: "Medication created successfully and added to user",
- 
+      // medication: newMedId,
+      // user: user,
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -54,7 +55,7 @@ const getMedicationsByUser = async (req, res) => {
   try {
     const { username } = req.params;
     const medication = await MedService.getMedicationsByUser(username);
-    return res.status(200).json( medication );
+    return res.status(200).json(medication);
   } catch (error) {
     console.error("Error fetching medications:", error.message);
     return res.status(500).json({ error: error.message });
@@ -62,15 +63,10 @@ const getMedicationsByUser = async (req, res) => {
 };
 
 const editInventory = async (req, res) => {
-  const { medicineID, dose, time, quantity } = req.body;
+  const { medicineID, quantity } = req.body;
 
   try {
-    const updatedMedicine = await MedService.edit(
-      medicineID,
-      dose,
-      time,
-      quantity
-    );
+    const updatedMedicine = await MedService.edit(medicineID, quantity);
 
     if (updatedMedicine) {
       return res.status(200).send({
@@ -81,7 +77,7 @@ const editInventory = async (req, res) => {
       return res.status(404).send({ message: "Medicine not found" });
     }
   } catch (error) {
-    console.error(error);
+    console.error("Error in editing inventory", error);
     return res.status(500).send({
       message: "Internal server error while editing inventory",
       error: error.message,

@@ -61,24 +61,16 @@ const getMedicationsByUser = async (username) => {
   }
 };
 
-const edit = async (medicineID, dose, time, quantity) => {
+const edit = async (medicineID, quantity) => {
   try {
-    const medicine = await Medication.findById(medicineID);
+  
+    const medicine = await MedID.findById(medicineID);
 
     if (!medicine) {
       throw new Error("Medicine not found");
     }
-
-    if (dose) {
-      medicine.dose = dose;
-    }
-
-    if (time) {
-      medicine.time = time;
-    }
-
     if (quantity !== undefined) {
-      medicine.quantity = quantity;
+      medicine.medQuantity = quantity;
     }
 
     const updatedMedicine = await medicine.save();
