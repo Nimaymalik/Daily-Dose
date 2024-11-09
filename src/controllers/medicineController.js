@@ -1,11 +1,18 @@
-const MedService=require("../services/MedService.js")
+const MedService = require("../services/MedService.js");
 const MedID = require("../models/medID.js");
 const User = require("../models/userModel.js");
 
 const createMedication = async (req, res) => {
   try {
-    const { username, medDaily, medName, medQuantity, medType, doses } =
-      req.body;
+    const {
+      username,
+      medDaily,
+      medName,
+      medQuantity,
+      medType,
+      medLink,
+      doses,
+    } = req.body;
 
     const user = await User.findOne({ username });
 
@@ -15,7 +22,7 @@ const createMedication = async (req, res) => {
         .json({ error: `User with username "${username}" not found` });
     }
 
-    if (!medDaily || !medName || !medQuantity || !medType) {
+    if (!medDaily || !medName || !medQuantity || !medType || !medLink) {
       return res.status(400).json({ error: "All medication fields required" });
     }
 
@@ -24,6 +31,7 @@ const createMedication = async (req, res) => {
       medName,
       medQuantity,
       medType,
+      medLink,
       doses: doses || [],
     });
 
@@ -58,12 +66,17 @@ const editInventory = async (req, res) => {
   const { medicineID, dose, time, quantity } = req.body;
 
   try {
-    const updatedMedicine = await MedService.edit(medicineID, dose, time, quantity);
+    const updatedMedicine = await MedService.edit(
+      medicineID,
+      dose,
+      time,
+      quantity
+    );
 
     if (updatedMedicine) {
       return res.status(200).send({
         message: "Inventory updated successfully",
-        updatedMedicine
+        updatedMedicine,
       });
     } else {
       return res.status(404).send({ message: "Medicine not found" });
@@ -72,11 +85,10 @@ const editInventory = async (req, res) => {
     console.error(error);
     return res.status(500).send({
       message: "Internal server error while editing inventory",
-      error: error.message
+      error: error.message,
     });
   }
 };
-
 
 const addDoseToMedication = async (req, res) => {
   try {

@@ -10,12 +10,19 @@ const MedIDSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+
   medQuantity: {
     type: Number,
     required: true,
     min: 0,
   },
+
   medType: {
+    type: String,
+    required: true,
+  },
+
+  medLink: {
     type: String,
     required: true,
   },
