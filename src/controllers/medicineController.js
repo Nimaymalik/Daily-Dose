@@ -54,15 +54,29 @@ const getMedicationsByUser = async (req, res) => {
   }
 };
 
-const editInventory=async()=>{
-  try {
-    //medQuantity update 
-    
-  } catch (error) {
-    
-  }
+const editInventory = async (req, res) => {
+  const { medicineID, dose, time, quantity } = req.body;
 
-}
+  try {
+    const updatedMedicine = await MedService.edit(medicineID, dose, time, quantity);
+
+    if (updatedMedicine) {
+      return res.status(200).send({
+        message: "Inventory updated successfully",
+        updatedMedicine
+      });
+    } else {
+      return res.status(404).send({ message: "Medicine not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({
+      message: "Internal server error while editing inventory",
+      error: error.message
+    });
+  }
+};
+
 
 const addDoseToMedication = async (req, res) => {
   try {

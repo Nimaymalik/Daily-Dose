@@ -59,10 +59,33 @@ const getMedicationsByUser = async (username) => {
   }
 };
 
-////////////////////////
-const edit = async (medicineID, dose, time) => {
+const edit = async (medicineID, dose, time, quantity) => {
   try {
-  } catch (error) {}
+    const medicine = await Medication.findById(medicineID);
+
+    if (!medicine) {
+      throw new Error("Medicine not found");
+    }
+
+    if (dose) {
+      medicine.dose = dose;
+    }
+
+    if (time) {
+      medicine.time = time;
+    }
+
+    if (quantity !== undefined) {
+      medicine.quantity = quantity;
+    }
+
+    const updatedMedicine = await medicine.save();
+
+    return updatedMedicine;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error updating medicine in the inventory");
+  }
 };
 
 const addDoseToMedication = async (medicineID, dose, time) => {

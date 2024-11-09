@@ -18,7 +18,6 @@ const login = async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await userService.findUserByUsername(username);
-
     if (!user) {
       return res.status(404).send({ message: `${username} not found` });
     }
@@ -26,7 +25,7 @@ const login = async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(401).send({ message: "Wrong Password" });
+      return res.status(401).send({ error: "Invalid Password" });
     }
 
     const jwt = jwtProvider.generateJWT(user._id);

@@ -30,9 +30,6 @@ const createUser = async (userData) => {
 const findUserByUsername = async (username) => {
   try {
     const user = await User.findOne({ username });
-    if (!user) {
-      throw new Error(`User with username "${username}" not found`);
-    }
     return user;
   } catch (error) {
     throw new Error(`Error finding user by username: ${error.message}`);
