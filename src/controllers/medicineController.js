@@ -54,7 +54,7 @@ const getMedicationsByUser = async (req, res) => {
   try {
     const { username } = req.params;
     const medication = await MedService.getMedicationsByUser(username);
-    return res.status(200).json({ medication });
+    return res.status(200).json( medication );
   } catch (error) {
     console.error("Error fetching medications:", error.message);
     return res.status(500).json({ error: error.message });
