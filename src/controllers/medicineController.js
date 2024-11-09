@@ -43,8 +43,7 @@ const createMedication = async (req, res) => {
 
     return res.status(200).json({
       message: "Medication created successfully and added to user",
-      medication: newMedId,
-      user: user,
+ 
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });

@@ -39,6 +39,7 @@ const getMedicationsByUser = async (username) => {
           dose: dose.dose,
           time: dose.time,
         }));
+        console.log(medicine.medLink);
         return {
           _id: medicine._id,
           medDaily: medicine.medDaily,

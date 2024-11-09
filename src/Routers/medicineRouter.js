@@ -14,7 +14,7 @@ router.put("/add-dose", medController.addDoseToMedication);
 // Route to delete a dose to a medication
 router.delete("/dose", medController.deleteDoseFromMedication);
 
-//edit inventory
+//edit inventory 
 router.put("/inventorry/edit", medController.editInventory);
 
 module.exports = router;
