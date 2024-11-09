@@ -70,8 +70,7 @@ const editInventory = async (req, res) => {
 
     if (updatedMedicine) {
       return res.status(200).send({
-        message: "Inventory updated successfully",
-        updatedMedicine,
+        message: "Inventory updated successfully"
       });
     } else {
       return res.status(404).send({ message: "Medicine not found" });
