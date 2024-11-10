@@ -12,6 +12,7 @@ const medicationSchema = new mongoose.Schema({
     ref: "MedId",
     required: true,
   },
+  
 });
 
 const Medication = mongoose.model("Medication", medicationSchema);

@@ -63,7 +63,6 @@ const getMedicationsByUser = async (username) => {
 
 const edit = async (medicineID, quantity) => {
   try {
-  
     const medicine = await MedID.findById(medicineID);
 
     if (!medicine) {
@@ -98,36 +97,60 @@ const addDoseToMedication = async (medicineID, dose, time) => {
   }
 };
 
-const deleteDose = async (medicineID, dose, time) => {
+const deleteDose = async (medicineID) => {
   try {
-    const medication = await MedID.findById(medicineID);
+    const medication = await MedID.findOne(medicineID);
 
     if (!medication) {
-      throw new Error("Medication not found");
+      throw new Error("Medication not found or Dose not found in medication");
     }
 
+    console.log("Doses array before deletion: ", medication.doses);
+    console.log("MedicineID provided (dose ID): ", medicineID);
+
+    // Find the index of the dose to be deleted in the doses array
     const doseIndex = medication.doses.findIndex(
-      (d) => d.dose === dose && d.time === time
+      (dose) => dose._id.toString() === medicineID.toString()
     );
 
     if (doseIndex === -1) {
-      throw new Error("Dose not found");
+      throw new Error("Dose not found in medication");
     }
 
+    // Remove the dose from the doses array
     medication.doses.splice(doseIndex, 1);
 
+    console.log("Updated Doses array: ", medication.doses);
+
+    // Save the updated medication document
     await medication.save();
 
     return medication;
   } catch (error) {
+    console.error("Error in deleteDose: ", error.message);
     throw new Error("Error deleting dose: " + error.message);
   }
 };
+
+// const updateMedicine = async (medName, updateData) => {
+//   console.log(medName,updateData);
+//   try {
+//     const updatedMedicine = await Medicine.findOneAndUpdate(
+//       { med_name: medName },
+//       { $set: updateData },
+//       { new: true }
+//     );
+//     return updatedMedicine;
+//   } catch (error) {
+//     throw new Error("Failed to update medicine: " + error.message);
+//   }
+// };
 
 module.exports = {
   addDoseToMedication,
   getMedicationsByUser,
   createMed,
   deleteDose,
+  // updateMedicine,
   edit,
 };

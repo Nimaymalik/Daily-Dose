@@ -11,10 +11,13 @@ router.get("/user/:username", medController.getMedicationsByUser);
 // Route to add a dose to a medication
 router.put("/add-dose", medController.addDoseToMedication);
 
+//edit inventory
+router.put("/inventory/edit", medController.editInventory);
+
 // Route to delete a dose to a medication
 router.delete("/dose", medController.deleteDoseFromMedication);
 
-//edit inventory
-router.put("/inventory/edit", medController.editInventory);
+// update the data
+// router.put('/api/medication/:med_name', medController.updateMedicine);
 
 module.exports = router;

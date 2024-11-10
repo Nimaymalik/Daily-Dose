@@ -38,6 +38,31 @@ const MedIDSchema = new mongoose.Schema({
       },
     },
   ],
+
+  drug: {
+    type: String,
+    required: true,
+  },
+  super_food: {
+    type: [String],
+    default: [],
+  },
+  bad_food: {
+    type: [String],
+    default: [],
+  },
+  common_symptom: {
+    type: [String],
+    default: [],
+  },
+  serious_symptom: {
+    type: [String],
+    default: [],
+  },
+  treatment: {
+    type: [String],
+    default: [],
+  },
 });
 
 const MedID = mongoose.model("MedId", MedIDSchema);

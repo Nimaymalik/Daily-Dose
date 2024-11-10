@@ -70,7 +70,7 @@ const editInventory = async (req, res) => {
 
     if (updatedMedicine) {
       return res.status(200).send({
-        message: "Inventory updated successfully"
+        message: "Inventory updated successfully",
       });
     } else {
       return res.status(404).send({ message: "Medicine not found" });
@@ -100,35 +100,68 @@ const addDoseToMedication = async (req, res) => {
   }
 };
 
-const deleteDoseFromMedication = async (req, res) => {
+async function deleteDoseFromMedication(req, res) {
+  const { medicineID } = req.params;
   try {
-    const { medicineID, dose, time } = req.body;
+    const deletedCount = await MedService.deleteDose(medicineID);
 
-    if (!medicineID || !dose || !time) {
-      return res
-        .status(400)
-        .json({ error: "All fields medicineID, dose, time are required" });
+    if (deletedCount > 0) {
+      res.status(200).json({
+        message: `Successfully deleted ${deletedCount} record(s) with medicineID: ${medicineID}`,
+      });
+    } else {
+      res
+        .status(404)
+        .json({ message: "No records found with the given medicineID." });
     }
-
-    const updatedMedication = await MedService.deleteDose(
-      medicineID,
-      dose,
-      time
-    );
-
-    return res.status(200).json({
-      message: "Dose deleted successfully",
-      updatedMedication,
+  } catch (err) {
+    res.status(500).json({
+      message: "Error occurred while deleting data.",
+      error: err.message,
     });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
   }
-};
+}
+
+// const updateMedicine = async (req, res) => {
+//   const medName = req.params.med_name;
+
+//   const updateData = {
+//     drug: req.body.drug,
+//     super_food: req.body.super_food || [],
+//     bad_food: req.body.bad_food || [],
+//     common_symptom: req.body.common_symptom || [],
+//     serious_symptom: req.body.serious_symptom || [],
+//     treatment: req.body.treatment || [],
+//   };
+//   console.log("updated",updateData);
+  
+//   try {
+//     const updatedMedicine = await MedService.updateMedicine(
+//       medName,
+//       updateData
+//     );
+//     console.log("updatedMedicine",updatedMedicine);
+
+//     if (!updatedMedicine) {
+//       return res.status(404).json({ message: "Medicine not found" });
+//     }
+//     res.status(200).json({
+//       message: "Medicine updated successfully",
+//       data: updatedMedicine,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       message: "Failed to update medicine",
+//       error: error.message,
+//     });
+//   }
+// };
 
 module.exports = {
   addDoseToMedication,
   getMedicationsByUser,
   createMedication,
   editInventory,
+  // updateMedicine,
   deleteDoseFromMedication,
 };
