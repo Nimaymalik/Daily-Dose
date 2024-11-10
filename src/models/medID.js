@@ -41,7 +41,6 @@ const MedIDSchema = new mongoose.Schema({
 
   drug: {
     type: String,
-    required: true,
   },
   super_food: {
     type: [String],
